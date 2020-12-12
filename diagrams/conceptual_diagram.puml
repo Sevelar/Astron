@@ -1,0 +1,112 @@
+@startuml
+
+entity user {
+    * id
+    --
+    * username
+    * password
+    * email
+    * phone_number
+    * is_admin
+    * created_at
+    * last_login
+}
+
+entity message {
+    * id
+    --
+    * user_id
+    * channel_id
+    * created_at
+    * content
+}
+
+entity channel {
+    * id
+    --
+    * name
+    * server_id
+    * category_id
+    * created_at
+}
+
+entity category {
+    * id
+    --
+    * name
+}
+
+entity server {
+    * id
+    --
+    * name
+    * location
+    * owner_user_id
+    * created_at
+}
+
+entity role {
+    * id
+    --
+    * name
+    * server_id
+}
+
+entity permission {
+    * id
+    --
+    * name
+}
+
+entity role_permission {
+    * id
+    --
+    * role_id
+    * permission_id
+    * state
+}
+
+entity server_member {
+    * id
+    --
+    * user_id
+    * server_id
+    * joined_at
+}
+
+entity server_member_role {
+    * id
+    --
+    * member_id
+    * role_id
+}
+
+entity channel_role {
+    * id
+    --
+    * channel_id
+    * role_id
+}
+
+user ||..|{ server_member
+user ||..|{ message
+server }|..|| user
+
+server ||..|{ channel
+channel ||..|{ message
+
+server ||..|{ server_member
+server ||..|{ role
+
+server_member ||..|{ server_member_role
+role ||..|{ server_member_role
+
+role ||..|{ role_permission
+permission ||..|{ role_permission
+
+channel }|..|| category
+
+channel ||..|{ channel_role
+channel_role }|..|| role
+
+@enduml
